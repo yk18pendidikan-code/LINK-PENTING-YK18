@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+      body {
+        /* Mengutamakan 'Quadrat Serial', jika tidak ada pakai Montserrat/Poppins */
+        font-family: 'Quadrat Serial', 'Montserrat', 'Poppins', sans-serif;
+        background-color: #581c24; 
+      }
+      
+      /* Efek Timbul 3D untuk Tampilan Premium */
+      .btn-timbul {
+        font-family: 'Quadrat Serial', 'Montserrat', 'Poppins', sans-serif;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 5px 0px #d1d5db, 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+      
+      .btn-timbul:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 7px 0px #dc1c13, 0 12px 20px rgba(220, 28, 19, 0.25);
+        background-color: #ffffff;
+        color: #dc1c13;
+      }
+      
+      .btn-timbul:active {
+        transform: translateY(5px);
+        box-shadow: 0 0px 0px transparent, 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex items-center justify-center p-4 sm:p-8">
+    
+    <div class="w-full max-w-2xl bg-[#c00d0d] rounded-[32px] shadow-2xl p-8 sm:p-12 border border-white/10 flex flex-col items-center relative overflow-hidden">
+      
+      <div class="mb-6 mt-4 flex justify-center">
+        <div class="bg-white rounded-xl p-4 shadow-inner border border-white/20 max-w-[220px] sm:max-w-[260px]">
+          <img 
+            src="https://portal.neutron.co.id/assets/images/logo.png" 
+            alt="Logo Neutron" 
+            class="w-full h-auto object-contain select-none"
+            onerror="this.onerror=null; this.parentNode.innerHTML='<span class=\'text-[#c00d0d] font-black text-4xl\'>N</span>';"
+          />
+        </div>
+      </div>
+      
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-white text-center tracking-wide mb-2 drop-shadow-md uppercase">
+        DATA PENDIDIKAN
+      </h1>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-white text-center tracking-wide mb-2 drop-shadow-md uppercase">
+        NEUTRON MURANGAN
+      </h2>
+      <p class="text-xs sm:text-sm font-bold text-red-200 text-center tracking-widest uppercase mb-10">
+        TAHUN 2026 / 2027
+      </p>
+      
+      <div id="loading" class="my-10 animate-pulse text-sm text-red-100 font-medium tracking-wide">
+        Menghubungkan ke Spreadsheet...
+      </div>
+      
+      <div id="links-container" class="space-y-6 w-full hidden"></div>
+      
+      <div class="mt-14 text-center opacity-50">
+        <p class="text-[10px] text-white tracking-widest font-semibold uppercase">
+          &copy; 2026 NEUTRON YOGYAKARTA - 18
+        </p>
+      </div>
+      
+    </div>
+
+    <script>
+      window.onload = function() {
+        google.script.run
+          .withSuccessHandler(renderLinks)
+          .withFailureHandler(function() {
+             document.getElementById('loading').innerText = "Gagal memuatkan data.";
+          })
+          .getLinksData();
+      };
+
+      function renderLinks(links) {
+        const container = document.getElementById('links-container');
+        const loading = document.getElementById('loading');
+        
+        loading.classList.add('hidden');
+        container.classList.remove('hidden');
+        
+        if (links.length === 0) {
+          container.innerHTML = '<p class="text-sm text-center text-red-100">Tiada pautan aktif.</p>';
+          return;
+        }
+        
+        links.forEach(link => {
+          const a = document.createElement('a');
+          a.href = link.url;
+          a.target = "_blank";
+          
+          // Tombol berukuran penuh, teks kapital tebal, efek timbul maksimal
+          a.className = "btn-timbul block w-full bg-white text-stone-900 font-extrabold py-4.5 px-8 rounded-full text-center text-sm sm:text-base tracking-wide uppercase border border-stone-200 cursor-pointer select-none break-words";
+          a.innerText = link.nama;
+          
+          container.appendChild(a);
+        });
+      }
+    </script>
+  </body>
+</html>

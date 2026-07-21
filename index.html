@@ -74,19 +74,19 @@
     </div>
 
     <script>
-      // URL Web App Google Apps Script Anda (harus diakhiri /exec)
-      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzmEhYUFwuCYlxp2wrWwT2NO5v3PCwpRXKwU0MXiLlZSS3kVQxhnDxfpEsWM54EUQs-ZQ/exec";
+       // GANTI dengan URL Web App hasil deploy Apps Script Anda
+      // (bentuknya: https://script.google.com/macros/s/XXXXXXXXXXXX/exec)
+      const API_URL = "https://script.google.com/macros/s/AKfycbzmEhYUFwuCYlxp2wrWwT2NO5v3PCwpRXKwU0MXiLlZSS3kVQxhnDxfpEsWM54EUQs-ZQ/exec";
 
       window.onload = function () {
-        fetch(SCRIPT_URL + "?action=data")
-          .then(function (res) {
-            if (!res.ok) throw new Error("Network response was not ok");
+        fetch(API_URL)
+          .then((res) => {
+            if (!res.ok) throw new Error("Gagal mengambil data");
             return res.json();
           })
           .then(renderLinks)
-          .catch(function (err) {
-            console.error(err);
-            document.getElementById('loading').innerText = "Gagal memuatkan data.";
+          .catch(() => {
+            document.getElementById("loading").innerText = "Gagal memuatkan data.";
           });
       };
 
